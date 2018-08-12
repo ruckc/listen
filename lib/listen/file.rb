@@ -1,4 +1,4 @@
-require 'digest/md5'
+require 'digest'
 
 module Listen
   class File
@@ -57,7 +57,7 @@ module Listen
       #
       return if data[:mtime].to_i + 2 <= Time.now.to_f
 
-      md5 = Digest::MD5.file(path).digest
+      md5 = Digest::SHA256.file(path).digest
       record.update_file(rel_path, data.merge(md5: md5))
       :modified if record_data[:md5] && md5 != record_data[:md5]
     rescue SystemCallError
